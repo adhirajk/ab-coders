@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>2D Arrays</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div class="container">
+			<img src="bg.jpg" alt="">
+			<div class="lists">
+				<h1>List of programs</h1>
+
+				<div class="list">
+					<p>DISPLAYING MARTRIX</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+
+int main()
+{
+    int matrix[4][2];
+
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            printf("Enter Value for %dth row %dth column: ",i,j);
+            scanf("%d", &matrix[i][j]);
+        }
+    }
+
+    printf("Matrix:\n");
+    for (int i = 0; i < 4; i++)
+    {
+        for (int j = 0; j < 2; j++)
+        {
+            printf("%d ", matrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Enter Value for 0th row 0th column: 1
+Enter Value for 0th row 1th column: 2
+Enter Value for 1th row 0th column: 3
+Enter Value for 1th row 1th column: 4
+Enter Value for 2th row 0th column: 5
+Enter Value for 2th row 1th column: 6
+Enter Value for 3th row 0th column: 7
+Enter Value for 3th row 1th column: 8
+
+Matrix:
+1 2
+3 4
+5 6
+7 8
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>ADDING MATRICES</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+
+int main()
+{
+    int row, col;
+
+    printf("Enter the number of rows: ");
+    scanf("%d", &row);
+    printf("Enter the number of columns: ");
+    scanf("%d", &col);
+
+    int matrix1[row][col];
+    int matrix2[row][col];
+    int sum[row][col];
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("Enter elements of the first matrix for %dth row %dth column: \n",i,j);
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("Enter elements of the second matrix for %dth row %dth column: \n", i, j);
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            sum[i][j] = matrix1[i][j] + matrix2[i][j];
+        }
+    }
+
+    printf("Sum of the matrices:\n");
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("%d\t", sum[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+OUTPUT:-
+
+Enter the number of rows: 2
+Enter the number of columns: 4
+
+Enter elements of the first matrix for 0th row 0th column:
+1
+Enter elements of the first matrix for 0th row 1th column:
+2
+Enter elements of the first matrix for 0th row 2th column:
+3
+Enter elements of the first matrix for 0th row 3th column:
+4
+Enter elements of the first matrix for 1th row 0th column:
+5
+Enter elements of the first matrix for 1th row 1th column:
+6
+Enter elements of the first matrix for 1th row 2th column:
+7
+Enter elements of the first matrix for 1th row 3th column:
+8
+Enter elements of the second matrix for 0th row 0th column:
+10
+Enter elements of the second matrix for 0th row 1th column:
+20
+Enter elements of the second matrix for 0th row 2th column:
+30 
+Enter elements of the second matrix for 0th row 3th column:
+40
+Enter elements of the second matrix for 1th row 0th column:
+50
+Enter elements of the second matrix for 1th row 1th column:
+60
+Enter elements of the second matrix for 1th row 2th column:
+70
+Enter elements of the second matrix for 1th row 3th column:
+80
+
+Sum of the matrices:
+11      22      33      44
+55      66      77      88
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>SUBTRACTING MATRICES</p>
+
+					<pre style="display: none">
+                     
+
+#include < stdio.h >
+
+int main()
+{
+    int row, col;
+
+    printf("Enter the number of rows: ");
+    scanf("%d", &row);
+    printf("Enter the number of columns: ");
+    scanf("%d", &col);
+
+    int matrix1[row][col];
+    int matrix2[row][col];
+    int difference[row][col];
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("Enter elements of the first matrix for %dth row %dth column: \n", i, j);
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("Enter elements of the second matrix for %dth row %dth column: \n", i, j);
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            difference[i][j] = matrix1[i][j] - matrix2[i][j];
+        }
+    }
+
+    printf("Difference of the matrices:\n");
+    for (int i = 0; i < row; i++)
+    {
+        for (int j = 0; j < col; j++)
+        {
+            printf("%d\t", difference[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+
+OUTPUT:-
+
+Enter the number of rows: 2
+Enter the number of columns: 2
+
+Enter elements of the first matrix for 0th row 0th column:
+1
+Enter elements of the first matrix for 0th row 1th column:
+5
+Enter elements of the first matrix for 1th row 0th column:
+4
+Enter elements of the first matrix for 1th row 1th column:
+6
+Enter elements of the second matrix for 0th row 0th column:
+3
+Enter elements of the second matrix for 0th row 1th column:
+7
+Enter elements of the second matrix for 1th row 0th column:
+9
+Enter elements of the second matrix for 1th row 1th column:
+5
+
+Difference of the matrices:
+-2      -2
+-5      1
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>COPYING MATRIX INTO ANOTHER</p>
+
+					<pre style="display: none">
+                     
+
+#include < stdio.h >
+
+int main()
+{
+    int rows, cols;
+
+    printf("Enter the number of rows: ");
+    scanf("%d", &rows);
+    printf("Enter the number of columns: ");
+    scanf("%d", &cols);
+
+    int originalMatrix[rows][cols];
+    int copiedMatrix[rows][cols];
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("Enter elements for %dth row %dth column: \n", i, j);
+            scanf("%d", &originalMatrix[i][j]);
+        }
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            copiedMatrix[i][j] = originalMatrix[i][j];
+        }
+    }
+
+    printf("Copied Matrix:\n");
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("%d\t", copiedMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+OUTPUT:-
+
+Enter the number of rows: 2
+Enter the number of columns: 2
+
+Enter elements for 0th row 0th column:
+1
+Enter elements for 0th row 1th column:
+2
+Enter elements for 1th row 0th column:
+3
+Enter elements for 1th row 1th column:
+4
+
+Copied Matrix:
+1       2
+3       4
+
+
+                    </pre
+					>
+				</div><div class="list">
+					<p>MULTIPLYING MATRIX WITH SCALER Value</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+
+int main()
+{
+    int rows, cols;
+
+    printf("Enter the number of rows: ");
+    scanf("%d", &rows);
+    printf("Enter the number of columns: ");
+    scanf("%d", &cols);
+
+    int originalMatrix[rows][cols];
+    int copiedMatrix[rows][cols];
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("Enter elements for %dth row %dth column: \n", i, j);
+            scanf("%d", &originalMatrix[i][j]);
+        }
+    }
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            copiedMatrix[i][j] = originalMatrix[i][j];
+        }
+    }
+
+    printf("Copied Matrix:\n");
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            printf("%d\t", copiedMatrix[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+OUTPUT:-
+        
+Enter the number of rows: 2
+Enter the number of columns: 2
+
+Enter elements for 0th row 0th column:
+10
+Enter elements for 0th row 1th column:
+20
+Enter elements for 1th row 0th column:
+30
+Enter elements for 1th row 1th column:
+40
+Enter the scalar value: 5
+Resulting Matrix:
+
+50      100
+150     200
+</pre
+					>
+				</div><div class="list">
+					<p>MULTIPLYING WITH MATRICES</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+
+int main()
+{
+    int row1, col1, row2, col2;
+
+    printf("Enter the number of rows and columns for the first matrix: ");
+    scanf("%d %d", &row1, &col1);
+    printf("Enter the number of rows and columns for the second matrix: ");
+    scanf("%d %d", &row2, &col2);
+
+    if (col1 != row2)
+    {
+        printf("Matrix multiplication is not possible. Number of columns in the first matrix must be equal to the number of rows in the second matrix.\n");
+        return 1;
+    }
+
+    int matrix1[row1][col1];
+    int matrix2[row2][col2];
+    int result[row1][col2];
+
+    for (int i = 0; i < row1; i++)
+    {
+        for (int j = 0; j < col1; j++)
+        {
+            printf("Enter elements of the first matrix for %dth row %dth column: \n", i, j);
+
+            scanf("%d", &matrix1[i][j]);
+        }
+    }
+
+    for (int i = 0; i < row2; i++)
+    {
+        for (int j = 0; j < col2; j++)
+        {
+            printf("Enter elements of the second matrix for %dth row %dth column: \n", i, j);
+            scanf("%d", &matrix2[i][j]);
+        }
+    }
+
+    for (int i = 0; i < row1; i++)
+    {
+        for (int j = 0; j < col2; j++)
+        {
+            result[i][j] = 0;
+            for (int k = 0; k < col1; k++)
+            {
+                result[i][j] += matrix1[i][k] * matrix2[k][j];
+            }
+        }
+    }
+
+    printf("Result of matrix multiplication:\n");
+    for (int i = 0; i < row1; i++)
+    {
+        for (int j = 0; j < col2; j++)
+        {
+            printf("%d\t", result[i][j]);
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
+
+
+
+
+OUTPUT:- 
+
+Enter the number of rows and columns for the first matrix: 2 2
+Enter the number of rows and columns for the second matrix: 2 2
+
+Enter elements of the first matrix for 0th row 0th column:
+3
+Enter elements of the first matrix for 0th row 1th column:
+5
+Enter elements of the first matrix for 1th row 0th column:
+9
+Enter elements of the first matrix for 1th row 1th column:
+8
+Enter elements of the second matrix for 0th row 0th column:
+2
+Enter elements of the second matrix for 0th row 1th column:
+7
+Enter elements of the second matrix for 1th row 0th column:
+3
+Enter elements of the second matrix for 1th row 1th column:
+6
+
+Result of matrix multiplication:
+21      51
+42      111
+
+                    </pre
+					>
+				</div>
+			</div>
+		</div>
+
+		<div class="codeContainer">
+			<h1>The code will be shown here</h1>
+			<h3>Click any of the list to see the code!</h3>
+		</div>
+		</div>
+
+		<script>
+			const container = document.querySelector(".codeContainer");
+			const [...lists] = document.querySelectorAll(".list");
+
+			lists.forEach((list) => {
+				list.addEventListener("click", () => {
+					const heading = list.querySelector("p").innerHTML;
+					const code = list.querySelector("pre").innerText;
+					render(heading, code);
+				});
+			});
+
+			function render(heading, code) {
+				container.innerHTML = `
+			<p>
+				${code}
+			</p>
+                `;
+			}
+		</script>
+	</body>
+</html>

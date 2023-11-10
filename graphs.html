@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Graphs</title>
+		<link rel="stylesheet" href="main.css" />
+	</head>
+	<body>
+		<div class="container">
+			<img src="bg.jpg" alt="">
+			<div class="lists">
+				<h1>List of programs</h1>
+
+				<div class="list">
+					<p>REPRESENT GRAPH IN ADJACENCY MATRIX</p>
+
+					<pre style="display: none">
+					
+						
+
+#include < stdio.h >
+#include < stdlib.h >
+
+void printAdjacencyMatrix(int** adjMatrix, int vertices) {
+    printf("Adjacency Matrix:\n");
+    for (int i = 0; i < vertices; i++) {
+        for (int j = 0; j < vertices; j++) {
+            printf("%d ", adjMatrix[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main() {
+    int vertices, edges;
+
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    int** adjMatrix = (int**)malloc(vertices * sizeof(int*));
+    for (int i = 0; i < vertices; i++) {
+        adjMatrix[i] = (int*)malloc(vertices * sizeof(int));
+        for (int j = 0; j < vertices; j++) {
+            adjMatrix[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < edges; i++) {
+        int start, end;
+        printf("Enter edge %d (start end): ", i + 1);
+        scanf("%d %d", &start, &end);
+        adjMatrix[start - 1][end - 1] = 1;
+        adjMatrix[end - 1][start - 1] = 1; 
+    }
+
+    printAdjacencyMatrix(adjMatrix, vertices);
+
+    for (int i = 0; i < vertices; i++) {
+        free(adjMatrix[i]);
+    }
+    free(adjMatrix);
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>CREATING GRAPH AS A ADJACENCY LIST</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node {
+    int vertex;
+    struct Node* next;
+};
+
+struct AdjList {
+    struct Node* head;
+};
+
+struct Graph {
+    int vertices;
+    struct AdjList* array;
+};
+
+struct Node* createNode(int vertex) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Graph* createGraph(int vertices) {
+    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->vertices = vertices;
+
+    graph->array = (struct AdjList*)malloc(vertices * sizeof(struct AdjList));
+
+    for (int i = 0; i < vertices; i++) {
+        graph->array[i].head = NULL;
+    }
+
+    return graph;
+}
+
+void insertEdge(struct Graph* graph, int start, int end) {
+    struct Node* newNode = createNode(end);
+    newNode->next = graph->array[start].head;
+    graph->array[start].head = newNode;
+
+    newNode = createNode(start);
+    newNode->next = graph->array[end].head;
+    graph->array[end].head = newNode;
+}
+
+void deleteEdge(struct Graph* graph, int start, int end) {
+    struct Node* current = graph->array[start].head;
+    struct Node* prev = NULL;
+
+    while (current != NULL && current->vertex != end) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current != NULL) {
+        if (prev != NULL) {
+            prev->next = current->next;
+        } else {
+            graph->array[start].head = current->next;
+        }
+        free(current);
+    }
+
+    current = graph->array[end].head;
+    prev = NULL;
+
+    while (current != NULL && current->vertex != start) {
+        prev = current;
+        current = current->next;
+    }
+
+    if (current != NULL) {
+        if (prev != NULL) {
+            prev->next = current->next;
+        } else {
+            graph->array[end].head = current->next;
+        }
+        free(current);
+    }
+}
+
+void insertVertex(struct Graph* graph, int vertex) {
+    if (vertex >= graph->vertices) {
+        int newSize = vertex + 1;
+        graph->array = (struct AdjList*)realloc(graph->array, newSize * sizeof(struct AdjList));
+
+        for (int i = graph->vertices; i < newSize; i++) {
+            graph->array[i].head = NULL;
+        }
+
+        graph->vertices = newSize;
+    }
+}
+
+void deleteVertex(struct Graph* graph, int vertex) {
+    for (int i = 0; i < graph->vertices; i++) {
+        deleteEdge(graph, vertex, i);
+    }
+
+    struct Node* current = graph->array[vertex].head;
+    struct Node* next;
+
+    while (current != NULL) {
+        next = current->next;
+        free(current);
+        current = next;
+    }
+
+    graph->array[vertex].head = NULL;
+}
+
+void printAdjacencyList(struct Graph* graph) {
+    printf("Adjacency List:\n");
+    for (int i = 0; i < graph->vertices; i++) {
+        struct Node* current = graph->array[i].head;
+        printf("Vertex %d: ", i);
+
+        while (current != NULL) {
+            printf("%d ", current->vertex);
+            current = current->next;
+        }
+
+        printf("\n");
+    }
+}
+
+int main() {
+    int vertices, edges;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    struct Graph* graph = createGraph(vertices);
+
+    for (int i = 0; i < edges; i++) {
+        int start, end;
+        printf("Enter edge %d (start end): ", i + 1);
+        scanf("%d %d", &start, &end);
+
+        insertVertex(graph, start);
+        insertVertex(graph, end);
+
+        insertEdge(graph, start, end);
+    }
+
+    printAdjacencyList(graph);
+
+    int deleteStart, deleteEnd;
+    printf("Enter edge to delete (start end): ");
+    scanf("%d %d", &deleteStart, &deleteEnd);
+    deleteEdge(graph, deleteStart, deleteEnd);
+
+    printAdjacencyList(graph);
+
+    int deleteVertexValue;
+    printf("Enter vertex to delete: ");
+    scanf("%d", &deleteVertexValue);
+    deleteVertex(graph, deleteVertexValue);
+
+    printAdjacencyList(graph);
+
+    for (int i = 0; i < graph->vertices; i++) {
+        struct Node* current = graph->array[i].head;
+        struct Node* next;
+
+        while (current != NULL) {
+            next = current->next;
+            free(current);
+            current = next;
+        }
+    }
+
+    free(graph->array);
+    free(graph);
+
+    return 0;
+}
+
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p> TRAVERSE ADJACENT MATRIX WITH DFS</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+void dfsTraversal(int** adjMatrix, int* visited, int vertices, int currentVertex) {
+    printf("%d ", currentVertex + 1);  
+    visited[currentVertex] = 1;
+
+    for (int i = 0; i < vertices; i++) {
+        if (adjMatrix[currentVertex][i] == 1 && !visited[i]) {
+            dfsTraversal(adjMatrix, visited, vertices, i);
+        }
+    }
+}
+
+void dfs(int** adjMatrix, int vertices) {
+    int* visited = (int*)malloc(vertices * sizeof(int));
+
+    for (int i = 0; i < vertices; i++) {
+        visited[i] = 0;
+    }
+
+    for (int i = 0; i < vertices; i++) {
+        if (!visited[i]) {
+            dfsTraversal(adjMatrix, visited, vertices, i);
+        }
+    }
+
+    free(visited);
+}
+
+int main() {
+    int vertices, edges;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    int** adjMatrix = (int**)malloc(vertices * sizeof(int*));
+    for (int i = 0; i < vertices; i++) {
+        adjMatrix[i] = (int*)malloc(vertices * sizeof(int));
+        for (int j = 0; j < vertices; j++) {
+            adjMatrix[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < edges; i++) {
+        int start, end;
+        printf("Enter edge %d (start end): ", i + 1);
+        scanf("%d %d", &start, &end);
+        adjMatrix[start - 1][end - 1] = 1;
+        adjMatrix[end - 1][start - 1] = 1; // For undirected graph
+    }
+
+    printf("DFS Traversal: ");
+    dfs(adjMatrix, vertices);
+    printf("\n");
+
+    for (int i = 0; i < vertices; i++) {
+        free(adjMatrix[i]);
+    }
+    free(adjMatrix);
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>TRAVERSE ADJACENT LIST WITH DFS</p>
+
+					<pre style="display: none">
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node {
+    int vertex;
+    struct Node* next;
+};
+
+struct AdjList {
+    struct Node* head;
+};
+
+struct Graph {
+    int vertices;
+    struct AdjList* array;
+};
+
+struct Node* createNode(int vertex) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Graph* createGraph(int vertices) {
+    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->vertices = vertices;
+
+    graph->array = (struct AdjList*)malloc(vertices * sizeof(struct AdjList));
+
+    for (int i = 0; i < vertices; i++) {
+        graph->array[i].head = NULL;
+    }
+
+    return graph;
+}
+
+void insertEdge(struct Graph* graph, int start, int end) {
+    struct Node* newNode = createNode(end);
+    newNode->next = graph->array[start].head;
+    graph->array[start].head = newNode;
+
+    newNode = createNode(start);
+    newNode->next = graph->array[end].head;
+    graph->array[end].head = newNode;
+}
+
+void dfsTraversal(struct Graph* graph, int* visited, int currentVertex) {
+    printf("%d ", currentVertex + 1);  // Assuming vertices are labeled from 1 to n
+    visited[currentVertex] = 1;
+
+    struct Node* current = graph->array[currentVertex].head;
+    while (current != NULL) {
+        if (!visited[current->vertex]) {
+            dfsTraversal(graph, visited, current->vertex);
+        }
+        current = current->next;
+    }
+}
+
+void dfs(struct Graph* graph) {
+    int* visited = (int*)malloc(graph->vertices * sizeof(int));
+
+    for (int i = 0; i < graph->vertices; i++) {
+        visited[i] = 0;
+    }
+
+    for (int i = 0; i < graph->vertices; i++) {
+        if (!visited[i]) {
+            dfsTraversal(graph, visited, i);
+        }
+    }
+
+    free(visited);
+}
+
+void printAdjacencyList(struct Graph* graph) {
+    printf("Adjacency List:\n");
+    for (int i = 0; i < graph->vertices; i++) {
+        struct Node* current = graph->array[i].head;
+        printf("Vertex %d: ", i + 1);
+
+        while (current != NULL) {
+            printf("%d ", current->vertex + 1);
+            current = current->next;
+        }
+
+        printf("\n");
+    }
+}
+
+int main() {
+    int vertices, edges;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    struct Graph* graph = createGraph(vertices);
+
+    for (int i = 0; i < edges; i++) {
+        int start, end;
+        printf("Enter edge %d (start end): ", i + 1);
+        scanf("%d %d", &start, &end);
+
+        insertEdge(graph, start - 1, end - 1);
+    }
+
+    printAdjacencyList(graph);
+
+    printf("DFS Traversal: ");
+    dfs(graph);
+    printf("\n");
+
+    for (int i = 0; i < graph->vertices; i++) {
+        struct Node* current = graph->array[i].head;
+        struct Node* next;
+
+        while (current != NULL) {
+            next = current->next;
+            free(current);
+            current = next;
+        }
+    }
+
+    free(graph->array);
+    free(graph);
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>TRAVERSE ADJACENT MATRIX WITH BFS</p>
+
+					<pre style="display: none">
+
+
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct QueueNode {
+    int vertex;
+    struct QueueNode* next;
+};
+
+struct Queue {
+    struct QueueNode *front, *rear;
+};
+
+struct QueueNode* createQueueNode(int vertex) {
+    struct QueueNode* newNode = (struct QueueNode*)malloc(sizeof(struct QueueNode));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+void enqueue(struct Queue* queue, int vertex) {
+    struct QueueNode* newNode = createQueueNode(vertex);
+    if (queue->rear == NULL) {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+int dequeue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        return -1; // Queue is empty
+    }
+    struct QueueNode* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    int vertex = temp->vertex;
+    free(temp);
+    return vertex;
+}
+
+
+void bfsTraversal(int** adjMatrix, int* visited, int vertices, int startVertex) {
+    struct Queue* queue = createQueue();
+
+    printf("%d ", startVertex + 1); 
+    visited[startVertex] = 1;
+    enqueue(queue, startVertex);
+
+    while (queue->front != NULL) {
+        int currentVertex = dequeue(queue);
+
+        for (int i = 0; i < vertices; i++) {
+            if (adjMatrix[currentVertex][i] == 1 && !visited[i]) {
+                printf("%d ", i + 1); // Assuming vertices are labeled from 1 to n
+                visited[i] = 1;
+                enqueue(queue, i);
+            }
+        }
+    }
+
+    free(queue);
+}
+
+int main() {
+    int vertices, edges;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    int** adjMatrix = (int**)malloc(vertices * sizeof(int*));
+    for (int i = 0; i < vertices; i++) {
+        adjMatrix[i] = (int*)malloc(vertices * sizeof(int));
+        for (int j = 0; j < vertices; j++) {
+            adjMatrix[i][j] = 0;
+        }
+    }
+
+    for (int i = 0; i < edges; i++) {
+        int start, end;
+        printf("Enter edge %d (start end): ", i + 1);
+        scanf("%d %d", &start, &end);
+        adjMatrix[start - 1][end - 1] = 1;
+        adjMatrix[end - 1][start - 1] = 1; 
+    }
+
+    int startVertex = 0; 
+    int* visited = (int*)malloc(vertices * sizeof(int));
+    for (int i = 0; i < vertices; i++) {
+        visited[i] = 0;
+    }
+
+    printf("BFS Traversal: ");
+    bfsTraversal(adjMatrix, visited, vertices, startVertex);
+    printf("\n");
+
+    for (int i = 0; i < vertices; i++) {
+        free(adjMatrix[i]);
+    }
+    free(adjMatrix);
+    free(visited);
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+				<div class="list">
+					<p>TRAVERSE ADJACENT LIST WITH BFS</p>
+
+					<pre style="display: none">
+
+
+#include < stdio.h >
+#include < stdlib.h >
+
+struct Node {
+    int vertex;
+    struct Node* next;
+};
+
+struct AdjList {
+    struct Node* head;
+};
+
+struct Graph {
+    int vertices;
+    struct AdjList* array;
+};
+
+struct QueueNode {
+    int vertex;
+    struct QueueNode* next;
+};
+
+struct Queue {
+    struct QueueNode *front, *rear;
+};
+
+struct Node* createNode(int vertex) {
+    struct Node* newNode = (struct Node*)malloc(sizeof(struct Node));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct QueueNode* createQueueNode(int vertex) {
+    struct QueueNode* newNode = (struct QueueNode*)malloc(sizeof(struct QueueNode));
+    newNode->vertex = vertex;
+    newNode->next = NULL;
+    return newNode;
+}
+
+struct Graph* createGraph(int vertices) {
+    struct Graph* graph = (struct Graph*)malloc(sizeof(struct Graph));
+    graph->vertices = vertices;
+
+    graph->array = (struct AdjList*)malloc(vertices * sizeof(struct AdjList));
+
+    for (int i = 0; i < vertices; i++) {
+        graph->array[i].head = NULL;
+    }
+
+    return graph;
+}
+
+void insertEdge(struct Graph* graph, int start, int end) {
+    struct Node* newNode = createNode(end);
+    newNode->next = graph->array[start].head;
+    graph->array[start].head = newNode;
+
+    newNode = createNode(start);
+    newNode->next = graph->array[end].head;
+    graph->array[end].head = newNode;
+}
+
+struct Queue* createQueue() {
+    struct Queue* queue = (struct Queue*)malloc(sizeof(struct Queue));
+    queue->front = queue->rear = NULL;
+    return queue;
+}
+
+void enqueue(struct Queue* queue, int vertex) {
+    struct QueueNode* newNode = createQueueNode(vertex);
+    if (queue->rear == NULL) {
+        queue->front = queue->rear = newNode;
+        return;
+    }
+    queue->rear->next = newNode;
+    queue->rear = newNode;
+}
+
+int dequeue(struct Queue* queue) {
+    if (queue->front == NULL) {
+        return -1; // Queue is empty
+    }
+    struct QueueNode* temp = queue->front;
+    queue->front = queue->front->next;
+    if (queue->front == NULL) {
+        queue->rear = NULL;
+    }
+    int vertex = temp->vertex;
+    free(temp);
+    return vertex;
+}
+
+void bfsTraversal(struct Graph* graph, int* visited, int startVertex) {
+    struct Queue* queue = createQueue();
+
+    printf("%d ", startVertex + 1); 
+    visited[startVertex] = 1;
+    enqueue(queue, startVertex);
+
+    while (queue->front != NULL) {
+        int currentVertex = dequeue(queue);
+
+        struct Node* current = graph->array[currentVertex].head;
+        while (current != NULL) {
+            if (!visited[current->vertex]) {
+                printf("%d ", current->vertex + 1); 
+                visited[current->vertex] = 1;
+                enqueue(queue, current->vertex);
+            }
+            current = current->next;
+        }
+    }
+
+    free(queue);
+}
+
+void printAdjacencyList(struct Graph* graph) {
+    printf("Adjacency List:\n");
+    for (int i = 0; i < graph->vertices; i++) {
+        struct Node* current = graph->array[i].head;
+        printf("Vertex %d: ", i + 1);
+
+        while (current != NULL) {
+            printf("%d ", current->vertex + 1);
+            current = current->next;
+        }
+
+        printf("\n");
+    }
+}
+
+int main() {
+    int vertices, edges;
+    printf("Enter the number of vertices: ");
+    scanf("%d", &vertices);
+    printf("Enter the number of edges: ");
+    scanf("%d", &edges);
+
+    struct Graph* graph = createGraph(vertices);
+
+    for (int i = 0; i < edges; i++) {
+        int start, end;
+        printf("Enter edge %d (start end): ", i + 1);
+        scanf("%d %d", &start, &end);
+
+        insertEdge(graph, start - 1, end - 1);
+    }
+
+    printAdjacencyList(graph);
+
+    int startVertex = 0; // Assuming vertices are labeled from 1 to n
+    int* visited = (int*)malloc(vertices * sizeof(int));
+    for (int i = 0; i < vertices; i++) {
+        visited[i] = 0;
+    }
+
+    printf("BFS Traversal: ");
+    bfsTraversal(graph, visited, startVertex);
+    printf("\n");
+
+    for (int i = 0; i < graph->vertices; i++) {
+        struct Node* current = graph->array[i].head;
+        struct Node* next;
+
+        while (current != NULL) {
+            next = current->next;
+            free(current);
+            current = next;
+        }
+    }
+
+    free(graph->array);
+    free(graph);
+    free(visited);
+
+    return 0;
+}
+                    </pre
+					>
+				</div>
+			</div>
+		</div>
+
+		<div class="codeContainer">
+			<h1>The code will be shown here</h1>
+			<h3>Click any of the list to see the code!</h3>
+		</div>
+		</div>
+
+		<script>
+			const container = document.querySelector(".codeContainer");
+			const [...lists] = document.querySelectorAll(".list");
+
+			lists.forEach((list) => {
+				list.addEventListener("click", () => {
+					const heading = list.querySelector("p").innerHTML;
+					const code = list.querySelector("pre").innerText;
+					render(heading, code);
+				});
+			});
+
+			function render(heading, code) {
+				container.innerHTML = `
+                	<h1 class="codeHeading">${heading}</h1>
+			<p>
+				${code}
+			</p>
+                `;
+			}
+		</script>
+	</body>
+</html>
